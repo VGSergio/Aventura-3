@@ -6,7 +6,6 @@
  **/
 
 #include "my_lib.c"
-#include "reader.c"
 #include <pthread.h>
 #include <stdio.h>
 #include <errno.h>      
@@ -56,10 +55,10 @@ int main(int argc, char *argv[]){
             pthread_join(thread[i], NULL);
         }
 
-        printf("Written elements from stack to file: %d\n", my_stack_len(stack));   fflush(stdout);
-        printf("Released bytes: %d\n", my_stack_write(stack, filename));        fflush(stdout);
+        printf("Written elements from stack to file: %d\n", my_stack_write(stack, filename));   fflush(stdout);
+        //printf("Released bytes: %d\n", my_stack_purge(stack));        fflush(stdout);
         printf("Bye from main\n");
-        close(fd);
+        //close(fd);
         pthread_exit(&mutex);
     } else {
         return EXIT_FAILURE;
@@ -86,7 +85,6 @@ static void *thread_start(void* ptr){
 }
 
 int getFileName(char *argv[]){
-    char* file;
 
     if(!argv[1]){
         fprintf(stderr, "USAGE: %s filename\n", argv[0]);
@@ -98,18 +96,4 @@ int getFileName(char *argv[]){
         filename = argv[1];
         return EXIT_SUCCESS;
     }
-/*    if(!argv[1]){
-        argv[2]=NULL;
-    }
-    
-    if(argv[2]){
-        fprintf(stderr, "Error: Demasiados argumentos\n");
-        return -1;
-    } else if(!argv[1]){
-        fprintf(stderr, "USAGE: ./av3 filename\n");
-        return -1;
-    } else {
-        filename = argv[1];
-        return 1;
-    }*/
 }
