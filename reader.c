@@ -26,7 +26,7 @@ int main(int argc, char *argv[]){
         int fd;
         if(fd = open(filename, O_RDONLY) >= 0){
             struct my_stack *stack = my_stack_read(filename);
-            int *value;
+            int value;
             
             int i = 0;
             int max = 0;
@@ -34,15 +34,15 @@ int main(int argc, char *argv[]){
             int sum = 0;
 
             printf("Stack length: %d\n", my_stack_len(stack));
-            while(*value = my_stack_pop(stack) && i < 10){
-                printf("%d\n", *value);
-                if(*value < min){
-                    min = *value;
+            while(value = my_stack_pop(stack) && i < 10){
+                printf("%d\n", value);
+                if(value < min){
+                    min = value;
                 }
-                if(*value > max){
-                    max = *value;
+                if(value > max){
+                    max = value;
                 }
-                sum += *value;
+                sum += value;
                 i++;
             }
             printf("Items: %d\t", i);
