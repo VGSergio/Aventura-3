@@ -176,7 +176,7 @@ int my_stack_purge(struct my_stack *stack){
  * @param   - char *filename:           the string containing the name of the file.
  * @return  - The number of nodes written into the file.
  **/
-int my_stack_write(struct my_stack *stack, char *filename){
+int my_stack_write(struct my_stack *stack, char *filename){ 
     // We prepare the inverted auxiliary stack which will be written on the file.
     if(!stack) return -1;
     struct my_stack *aux = my_stack_init(stack->size);
