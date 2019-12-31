@@ -28,8 +28,8 @@ typedef struct str_thdata {
     char message[100];
 } thdata;
 
-void main(int argc, char *argv[]){
-    if(getFileName(argv)==1){
+int main(int argc, char *argv[]){
+    if(getFileName(argv) == EXIT_SUCCESS){
         printf("Threads: %d, Iterations: %d\n", NUM_THREADS, N);
         int fd = open(filename, O_RDONLY);
         if(fd == -1){
@@ -61,6 +61,8 @@ void main(int argc, char *argv[]){
         printf("Bye from main\n");
         close(fd);
         pthread_exit(&mutex);
+    } else {
+        return EXIT_FAILURE;
     }
 }
 
@@ -71,7 +73,7 @@ static void *thread_start(void* ptr){
     for(int i=0; i<N; i++){
         pthread_mutex_lock(&mutex);
         //printf("%s%ld ejecutando pop\n", data->message, pthread_self());     fflush(stdout);
-        int* value = (int)my_stack_pop(stack);
+        int* value = my_stack_pop(stack);
         value++;
         
         //sleep(0.001);
@@ -85,8 +87,19 @@ static void *thread_start(void* ptr){
 
 int getFileName(char *argv[]){
     char* file;
+
     if(!argv[1]){
-        argv[2]=NULL;       // We have to do this because if the basic cd is the first command used, args[2] has no assigned value and may not be NULL, as it is not touched during parse_args
+        fprintf(stderr, "USAGE: %s filename\n", argv[0]);
+        return EXIT_FAILURE;
+    } else if(argv[2]){
+        fprintf(stderr, "Error: Demasiados argumentos\n");
+        return EXIT_FAILURE;
+    } else {
+        filename = argv[1];
+        return EXIT_SUCCESS;
+    }
+/*    if(!argv[1]){
+        argv[2]=NULL;
     }
     
     if(argv[2]){
@@ -98,5 +111,5 @@ int getFileName(char *argv[]){
     } else {
         filename = argv[1];
         return 1;
-    }
+    }*/
 }
